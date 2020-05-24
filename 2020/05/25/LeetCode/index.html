@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/4.png">
+  <link rel="icon" type="image/png" href="/img/4.png#%20%E7%BD%91%E7%AB%99%E6%A0%87%E7%AD%BE%E9%A1%B5%E7%9A%84%20icon">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="zz">
+  <meta name="author" content="Wisper">
+  <meta name="keywords" content="">
+  <title>LeetCode | Wisper</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Wisper's blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">标签</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/6.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+                <p class="mt-3 post-meta">
+                  <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+                  星期一, 五月 25日 2020, 1:40 凌晨
+                </p>
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    2.1k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      9 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="fas fa-angle-down scroll-down-arrow"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <div class="markdown-body">
+              <h1 id="《程序员面试金典6》-java"><a href="#《程序员面试金典6》-java" class="headerlink" title="《程序员面试金典6》(java)"></a>《程序员面试金典6》(java)</h1><h2 id="1-判断字符唯一"><a href="#1-判断字符唯一" class="headerlink" title="1.判断字符唯一"></a><a href="https://leetcode-cn.com/problems/is-unique-lcci/" target="_blank" rel="noopener">1.判断字符唯一</a></h2><p><strong>思路：</strong></p>
+<ul>
+<li><strong>直接用String类的方法，无需额外数据结构</strong></li>
+</ul>
+<p>​    indexOf( ) ，lastIndexOf( )    从第i个字符以后查找i位置字符索引，存在重复则查到索引大于-1，否则返回-1。</p>
+<p>​    replace( )   如果字符唯一则将字符替换成<strong>空串</strong>，字符串长度只减一。</p>
+<pre><code class="java">class Solution {
+     public boolean isUnique(String astr) {
+         int l = astr.length();
+          String temp;
+          for (int i=0;i&lt;l;i++){
+              temp=astr;
+              if ((temp.replace(String.valueOf(temp.charAt(i)),&quot;&quot;)).length()!=l-1)
+                  return false;
+          }
+          return  true;
+      }
+ }</code></pre>
+<ul>
+<li><p><strong>用额外数据结构</strong></p>
+<p>数组    </p>
+<p>​            1.双循环直接查找。</p>
+<p>​            2.sort后比较相邻位置</p>
+<pre><code class="java">class Solution {
+    public boolean isUnique(String astr) {
+        char[] c = astr.toCharArray();
+        Arrays.sort(c);
+        for (int i=0;i&lt;c.length-1;i++){
+            if (c[i]==c[i+1])
+                return false;
+        }
+        return true;
+    }
+}</code></pre>
+<p>HashSet  比较集合长度和数组长度是否相等判重</p>
+<pre><code class="java">class Solution {
+    public boolean isUnique(String astr) {
+        char[]c = astr.toCharArray();
+        Set set = new HashSet();
+        for (char a:c)
+            set.add(a);
+        if (set.size()!=c.length)
+            return false;
+        return true;
+    }
+}</code></pre>
+<p>Bitset  判断该位置有没有元素判重，无则加入</p>
+<pre><code class="java">class Solution {
+    public boolean isUnique(String astr) {
+        BitSet set = new BitSet();
+        for (char a:astr.toCharArray()){
+            if (set.get(a))
+                return false;
+            set.set(a);
+        }
+        return true;
+    }
+}</code></pre>
+<p>Map  键唯一特点，将字符串每个字符设为键判重</p>
+<pre><code class="java">class Solution {
+    public boolean isUnique(String astr) {
+        Map map = new HashMap();
+        for (char c:astr.toCharArray()){
+            if (map.containsKey(c))
+                return false;
+            map.put(c,0);
+        }
+        return true;
+    }
+}</code></pre>
+</li>
+</ul>
+<h2 id="2-判定是否互为字符重排"><a href="#2-判定是否互为字符重排" class="headerlink" title="2.判定是否互为字符重排"></a>2.<a href="https://leetcode-cn.com/problems/check-permutation-lcci/" target="_blank" rel="noopener">判定是否互为字符重排</a></h2><p><strong>思路：</strong></p>
+<p>题意即判断两个字符串的字符相同且相同字符数量也相同。</p>
+<ul>
+<li>不用库函数，首先长度相同，运用两个字符数组相同字符数量也相同特点，需要一个额外字符数组长度为128存字符数，遍历两个字符数组的每个字符，对应额外数组的索引位置一个加一个减，最后根据额外字符数组是否都为0判断。</li>
+</ul>
+<ul>
+<li>Map 字符为键，相同字符数量为值，可以用两个map，直接eauqls比较两个map是否相同，也可以一个map一个数组,每次匹配到map值不为0就减一，直到数组比较完，前提是两个字符串长度相同。</li>
+</ul>
+<ul>
+<li>先数组排序然后equals比较是否相同。</li>
+</ul>
+<pre><code class="java">class Solution {
+    public boolean CheckPermutation(String s1, String s2) {
+        char[] c1 = s1.toCharArray();
+        char[] c2 = s2.toCharArray();
+        Arrays.sort(c1);
+        Arrays.sort(c2);
+        return Arrays.equals(c1,c2);
+    }
+}</code></pre>
+<ul>
+<li>StringBuilder  可以删除指定位置的值deleteCharAt(int index) ，只要将一个匹配另一个StringBuilder，找不到则返回false，找到则删除，当两个长度相同，直到数组匹配完就返回true。</li>
+</ul>
+<pre><code class="java">class Solution {
+    public boolean CheckPermutation(String s1, String s2) {
+        if (s1.length() != s2.length()) {
+            return false;
+        }
+        StringBuilder s = new StringBuilder(s2);
+        for (int i = 0, length = s1.length(); i &lt; length; i++) {
+            if (s.indexOf(String.valueOf(s1.charAt(i))) == -1) {
+                return false;
+            }
+            s.deleteCharAt(s.indexOf(String.valueOf(s1.charAt(i))));
+        }
+        return true;
+    }
+}</code></pre>
+<h2 id="3-URL化"><a href="#3-URL化" class="headerlink" title="3.URL化"></a>3.<a href="https://leetcode-cn.com/problems/string-to-url-lcci/" target="_blank" rel="noopener">URL化</a></h2><p><strong>思路：</strong></p>
+<ul>
+<li>初步想法：遍历字符数组，读到空格在新数组中依次添加三个字符。由于S在length长度之后还可能有空格，所以需要一个控制变量j来控制长度为length。最后新数组由于长度过长后面有很多空字符，转成字符串需要用trim()去掉空格。</li>
+</ul>
+<pre><code class="java">class Solution {
+    public String replaceSpaces(String S, int length) {
+        //char[]c = new char[3*length];
+        char[]c = new char[S.length()];
+        int i=0,j=0;
+        for (char s:S.toCharArray()){
+            if (j&lt;length){
+                if (s==&#39; &#39;){
+                    c[i]=&#39;%&#39;;
+                    c[i+1]=&#39;2&#39;;
+                    c[i+2]=&#39;0&#39;;
+                    i+=3;
+                }else{
+                    c[i]=s;
+                    i+=1;
+                }
+                j++;
+            }
+        }
+       // String s1=String.valueOf(c);
+       // return s1.trim();是前后空格都去掉，实际只需要判断后面
+        //return String.valueOf(c).substring(0,i);
+        return new String(ans, 0, i);
+    }
+}</code></pre>
+<ul>
+<li>直接用库函数替换</li>
+</ul>
+<pre><code class="java">class Solution {
+    public String replaceSpaces(String S, int length) {
+        return S.substring(0,length).replaceAll(&quot; &quot;,&quot;%20&quot;);
+    }
+}</code></pre>
+<ul>
+<li>Stringbuilder可以直接append字符串</li>
+</ul>
+<pre><code class="java">class Solution {
+    public String replaceSpaces(String S, int length) {
+        StringBuilder sb = new StringBuilder();
+        for (int i=0;i&lt;S.length()&amp;&amp;i&lt;length;i++){
+            if (S.charAt(i)==&#39; &#39;)
+                sb.append(&quot;%20&quot;);
+            else{
+                sb.append(S.charAt(i));
+            }
+        }
+        return sb.toString();
+    }
+}</code></pre>
+<h2 id="4-回文排列"><a href="#4-回文排列" class="headerlink" title="4.回文排列"></a>4.<a href="https://leetcode-cn.com/problems/palindrome-permutation-lcci/" target="_blank" rel="noopener">回文排列</a></h2><p><strong>思路：</strong>回文串满足的特点：<strong>最多只能有一个字符数量是奇数</strong>。所以可以统计相同字符数量看奇数的数量是否&lt;=1。</p>
+<pre><code class="java">class Solution {
+    public boolean canPermutePalindrome(String s) {
+        int[] ascii = new int[256];
+        int count = 0;
+        for(int i = 0;i&lt;s.length();i++){
+            ascii[s.charAt(i)]++;
+            if((ascii[s.charAt(i)] &amp; 1) == 1){
+                count++;
+            }else{
+                count--;
+            }
+        }
+        return count &lt;= 1;
+    }
+}</code></pre>
+<ul>
+<li>数组先排序，然后两个两个读，相同则继续读，不同则记录k加1，并且再读一个，和前面相同则继续读。记录大于1则false。<strong>需要判断i是否指向了最后一个位置，否则可能数组越界，如果是的话则说明最后一个单着，k+1</strong>。</li>
+</ul>
+<pre><code class="java">class Solution {
+    public boolean canPermutePalindrome(String s) {
+        char[]c=s.toCharArray();
+        int k=0;
+        Arrays.sort(c);
+        for (int i=0;i&lt;c.length;i++){
+            if (i+1&lt;c.length&amp;&amp;c[i]==c[i+1])
+                i++;
+            else {
+                k++;
+                if (k&gt;1)
+                    return false;
+            }
+        }
+        return true;
+    }
+}</code></pre>
+<ul>
+<li>HashSet 或者栈。遍历字符，检查HashSet，有则删除，没有则添加。最后根据集合大小判断。</li>
+</ul>
+<pre><code class="java">class Solution {
+    public boolean canPermutePalindrome(String s) {
+        HashSet hs = new HashSet();
+        for (char c:s.toCharArray()){
+            if (hs.contains(c)){
+                hs.remove(c);
+            }else{
+                hs.add(c);
+            }
+        }
+        if (hs.size()&gt;1)
+            return false;
+        return  true;
+    }
+}</code></pre>
+<h2 id="5-一次编辑"><a href="#5-一次编辑" class="headerlink" title="5.一次编辑"></a>5.<a href="https://leetcode-cn.com/problems/one-away-lcci/" target="_blank" rel="noopener">一次编辑</a></h2><p><strong>思路：</strong>首先根据长度排除所有长度差大于等于2的。然后可以分三种情况再判断</p>
+<p>​            1.如果first.length()+1=second.length()</p>
+<p>​                    则需要判断是否可以添加一个字符。同步遍历比较，当不同时，读second下一个，相同则把记录当前不同的次数变量k++。然后再继续同步遍历，如果再找到不同则返回false；</p>
+<p>​            2.如果first.length()=second.length()</p>
+<p>​                    则需要判断是否替换一个字符。同步遍历比较到不同时，则把记录当前不同的次数变量k++，然后继续遍历，如果再找到不同则返回false；</p>
+<p>​            3.如果first.length()-1=second.length()</p>
+<p>​                    则需要判断是否可以删除一个字符，与第一种情况first和second反过来即可。</p>
+<blockquote>
+<p>改了很久的bug。。。。终于过了!!!!这种朴素的想法真的是漏洞太多了，我太难了。</p>
+<p>执行结果：</p>
+<p>通过</p>
+<p>显示详情</p>
+<p>执行用时 :2 ms, 在所有 Java 提交中击败了99.42%的用户</p>
+<p>内存消耗 :39.6 MB, 在所有 Java 提交中击败了100.00%的用户</p>
+</blockquote>
+<pre><code class="java">class Solution {
+    public boolean oneEditAway(String first, String second) {
+        if  (Math.abs(first.length()-second.length())&gt;=2)
+            return false;
+        if ((first.length()==0||second.length()==0)&amp;&amp;Math.abs(first.length()-second.length())==1)
+            return true;
+        char[] a = first.toCharArray();
+        char[] b = second.toCharArray();
+        int k=0;
+        if (first.length()==second.length()){
+            for (int i=0;i&lt;first.length();i++){
+                if (a[i]!=b[i])
+                    k++;
+                if (k&gt;1)
+                    return false;
+            }
+        }
+        else if (first.length()-1==second.length()) {
+            for (int i = 0, j = 0; i &lt; first.length(); i++, j++) {
+                if (k &lt; 1 &amp;&amp; a[i] != b[j] &amp;&amp; a[i + 1] == b[j]) {
+                    k++;
+                    i++;
+                } else if (a[i] == b[j]&amp;&amp;j&lt;second.length()-1){
+                }else if (a[i] == b[j]&amp;&amp;j==second.length()-1){
+                    break;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+        else{
+            for (int i = 0, j = 0; i &lt; second.length(); i++, j++) {
+                if (k &lt; 1 &amp;&amp; b[i] != a[j] &amp;&amp; b[i + 1] == a[j]) {
+                    k++;
+                    i++;
+                } else if (b[i]==a[j]&amp;&amp;j&lt;first.length()-1){
+
+                }else if (b[i]==a[j]&amp;&amp;j==first.length()-1)
+                    break;
+                else {
+                    return false;
+                }
+            }
+        }
+        return true;
+
+    }
+}</code></pre>
+<ul>
+<li>优化代码：可以通过将两个串长的那个一直用变量first表示，短的用second表示，这样可以将第一种和第三种情况合并。</li>
+</ul>
+<pre><code class="java">class Solution {
+    public boolean oneEditAway(String first, String second) {
+        //小的字符串用second，大的first
+        if(first.length() &gt; second.length()){
+            String temp = first;
+            first = second;
+            second = temp;
+        }
+        if(second.length()-first.length()&gt;1){
+            return false;
+        }else {
+            if(second.length() == first.length()){
+                //判断是否可以替换,两处相同位置不同就return false
+                int count = 0;
+                for (int i = 0; i &lt;first.length() ; i++) {
+                    if(first.charAt(i) != second.charAt(i)){
+                        count++;
+                        if(count == 2){
+                            return false;
+                        }
+                    }
+                }
+            }else {
+                //判断是否通过加就行
+                for (int i = 0; i &lt;first.length() ; i++) {
+                    if(first.charAt(i)!=second.charAt(i) &amp;&amp; first.charAt(i) !=second.charAt(i+1)){
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+}</code></pre>
+<p>定位到第一个不同的地方，然后比较子串是否相同。将长度相同和差一这两种情况通过改变比较子串的开始位置来当成整体实现。</p>
+<pre><code class="java">class Solution {
+    public boolean oneEditAway(String first, String second) {
+        if (first == null || second == null) return false;
+        int len1 = first.length();
+        int len2 = second.length();
+        if (Math.abs(len1 - len2) &gt; 1) return false;
+        if (len2 &gt; len1) return oneEditAway(second, first);
+        for (int i = 0; i &lt; len2; i++){
+            if (first.charAt(i) != second.charAt(i)){
+                // 如果是长度相同字符串，那就比较下一个，如果长度不一样，那就从该字符开始进行比较。
+                return first.substring(i + 1).equals(second.substring(len1 == len2 ? i + 1 : i));
+            }
+        }
+        return true;
+    }
+
+}</code></pre>
+
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/LeetCode/">LeetCode</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/java/">java</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98%E9%9D%A2%E8%AF%95%E9%87%91%E5%85%B86/">程序员面试金典6</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/05/08/%E7%96%AB%E6%83%85%E6%9C%9F%E9%97%B4/">
+                        <span class="hidden-mobile">疫情期间</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+    <!-- APlayer 音乐播放器 -->
+    <div id="aplayer"></div>
+    <script defer src="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.js" ></script>
+<link  rel="stylesheet" href="https://cdn.staticfile.org/aplayer/1.10.1/APlayer.min.css" />
+<script type="text/javascript">
+  var oldLoad = window.onload;
+  window.onload = function () {
+    new APlayer({
+      container: document.getElementById('aplayer'),
+      fixed: true,
+      autoplay: 'false' === 'true',
+      loop: 'one',
+      order: 'random',
+      theme: '#b7daff',
+      preload: 'none',
+      audio: [{"name":"River","artist":"女流","url":"/songs/女流 - River（翻自 Charlie Puth）.flac","cover":"/img/avatar.png"},{"name":"Wish My Life Away","artist":"女流","url":"/songs/女流 - Wish My Life Away（翻自 Kan R. Gao）.flac","cover":"/img/avatar.png"}]
+    });
+    oldLoad && oldLoad();
+  }
+</script>
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "LeetCode&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+  
+    <script type="text/javascript">
+      //定义获取词语下标
+      var a_idx = 0;
+      jQuery(document).ready(function ($) {
+        //点击body时触发事件
+        $("body").click(function (e) {
+          //需要显示的词语
+          var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正", "法治", "爱国", "敬业", "诚信", "友善");
+          //设置词语给span标签
+          var $i = $("<span/>").text(a[a_idx]);
+          //下标等于原来下标+1  余 词语总数
+          a_idx = (a_idx + 1) % a.length;
+          //获取鼠标指针的位置，分别相对于文档的左和右边缘。
+          //获取x和y的指针坐标
+          var x = e.pageX, y = e.pageY;
+          //在鼠标的指针的位置给$i定义的span标签添加css样式
+          $i.css({
+            "z-index": 999,
+            "top": y - 20,
+            "left": x,
+            "position": "absolute",
+            "font-weight": "bold",
+            "color": rand_color()
+          });
+          // 随机颜色
+          function rand_color() {
+            return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")"
+          }
+          //在body添加这个标签
+          $("body").append($i);
+          //animate() 方法执行 CSS 属性集的自定义动画。
+          //该方法通过CSS样式将元素从一个状态改变为另一个状态。CSS属性值是逐渐改变的，这样就可以创建动画效果。
+          //详情请看http://www.w3school.com.cn/jquery/effect_animate.asp
+          $i.animate({
+            //将原来的位置向上移动180
+            "top": y - 180,
+            "opacity": 0
+            //1500动画的速度
+          }, 1500, function () {
+            //时间到了自动删除
+            $i.remove();
+          });
+        });
+      })
+      ;
+    </script>
+  
+
+
+
+
+
+
+
+
+</body>
+</html>
