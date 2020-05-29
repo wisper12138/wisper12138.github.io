@@ -17,7 +17,7 @@
   <meta name="description" content="zz">
   <meta name="author" content="Wisper">
   <meta name="keywords" content="">
-  <title>LeetCode2 | Wisper</title>
+  <title>LeetCode3 | Wisper</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
@@ -124,7 +124,7 @@
               
                 <p class="mt-3 post-meta">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-                  星期四, 五月 28日 2020, 11:12 晚上
+                  星期五, 五月 29日 2020, 5:50 下午
                 </p>
               
 
@@ -133,7 +133,7 @@
                   
                   <span class="post-meta">
                     <i class="far fa-chart-bar"></i>
-                    1.2k 字
+                    911 字
                   </span>
                 
 
@@ -141,7 +141,7 @@
                   
                   <span class="post-meta">
                       <i class="far fa-clock"></i>
-                      5 分钟
+                      4 分钟
                   </span>
                 
 
@@ -173,183 +173,153 @@
           <div class="post-content mx-auto" id="post">
             
             <div class="markdown-body">
-              <h2 id="6-字符串压缩"><a href="#6-字符串压缩" class="headerlink" title="6.字符串压缩"></a>6.<a href="https://leetcode-cn.com/problems/compress-string-lcci/" target="_blank" rel="noopener">字符串压缩</a></h2><p><strong>思路：</strong>可以用数组存压缩后的字符串，遍历比较相邻的字符，相同则计数器加1，不同则将当前计数器存到数组，继续比较下一个。</p>
-<p>StringBuilder: 前后两个比较，相同则加1</p>
+              <hr>
+<h2 id="10-移除重复节点"><a href="#10-移除重复节点" class="headerlink" title="10.移除重复节点"></a>10.<a href="https://leetcode-cn.com/problems/remove-duplicate-node-lcci/" target="_blank" rel="noopener">移除重复节点</a></h2><p><strong>思路：</strong> 双指针，q将所有与当前p相同的断链，p保持不同的链接。</p>
 <pre><code class="java">class Solution {
-    public String compressString(String S) {
-        //如果长度为1或空肯定返回原字符串
-        if (S.length()&lt;=1)
-            return S;
-        StringBuilder sb = new StringBuilder().append(S.charAt(0));
-
-        int j=1;
-        for (int i=1;i&lt;S.length();i++){
-            if (S.charAt(i)==S.charAt(i-1))
-                j++;
-            else{
-                sb.append(j).append(S.charAt(i));
-
-                j=1;
+    public ListNode removeDuplicateNodes(ListNode head) {
+        ListNode p = head;
+        while (p!=null){
+            ListNode q=p;
+            while (q.next!=null){
+                if (q.next.val==p.val)
+                    q.next=q.next.next;
+                else
+                    q=q.next;
             }
+            p=p.next;
         }
-        return sb.append(j).length()&lt;S.length()?sb.toString():S;
+        return head;
     }
 }</code></pre>
-<p>双指针 找到每个字符之后第一个不相同的位置，一次性计数j-i</p>
+<p>也可以消耗额外空间判重比如用HashSet、布尔数组</p>
 <pre><code class="java">class Solution {
-    public String compressString(String S){
-            int N=S.length();
-            int i=0;
-            StringBuilder sb=new StringBuilder();
-            while(i&lt;N){
-            int j=i;
-            while(j&lt;N &amp;&amp;S.charAt(j)==S.charAt(i)){
-            j++;
-            }
-            sb.append(S.charAt(i));
-            sb.append(j-i);
-            i=j;
-            }
-        return sb.length()&lt;S.length()?sb.toString():S;
+    public ListNode removeDuplicateNodes(ListNode head) {
+        if (head==null)
+            return null;
+        ListNode pre =head;
+        ListNode next=head;
+        Set set = new HashSet();
+        set.add(pre.val);
+        while (pre.next!=null){
+            next=pre.next;
+            if (set.contains(next.val)){
+                pre.next=next.next;
+            }else{
+                set.add(next.val);
+                pre=next;
+            }            
+        }
+        return head;
     }
 }</code></pre>
-<h2 id="7-旋转矩阵"><a href="#7-旋转矩阵" class="headerlink" title="7.旋转矩阵"></a>7.<a href="https://leetcode-cn.com/problems/rotate-matrix-lcci/" target="_blank" rel="noopener">旋转矩阵</a></h2><p><strong>思路：</strong>这种题通常可以找到下标的规律。只要观察原下标的位置换成了什么下标就可以发现，原下标(i,j)换成了(n-1-j,i),并且换到了(j,n-1-i)的位置上，四个位置的元素满足这个交换规律为一组，所以只需要遍历n<em>n/4个元素进行交换就可以了，以4-4矩阵为例，下标位置为 *</em>，**标的位置</p>
-<p>，。。。</p>
-<p>，，。。</p>
-<p>，。。。</p>
-<p>。。。。</p>
+<h2 id="11-返回倒数第-k-个节点"><a href="#11-返回倒数第-k-个节点" class="headerlink" title="11.返回倒数第 k 个节点"></a>11.<a href="https://leetcode-cn.com/problems/kth-node-from-end-of-list-lcci/" target="_blank" rel="noopener">返回倒数第 k 个节点</a></h2><p><strong>思路：</strong>可以先得到链表长度l，然后从头读返回第l-k+1值</p>
 <pre><code class="java">class Solution {
-    public void rotate(int[][] matrix) {
-        int l=matrix.length;
-        for (int i=0;i&lt;l-1;i++){
-            for (int j=0;j&lt;=i&amp;&amp;j&lt;l-1-i;j++){
-                int t=matrix[i][j];
-                matrix[i][j]=matrix[l-1-j][i];
-                matrix[l-1-j][i]=matrix[l-1-i][l-1-j];
-                matrix[l-1-i][l-1-j]=matrix[j][l-1-i];
-                matrix[j][l-1-i]=t;
-            }
+    public int kthToLast(ListNode head, int k) {
+        ListNode p = head;
+        int i=0;
+        while (p!=null){
+            i++;
+            p=p.next;
         }
+        p=head;
+        for (int j=1;j&lt;i-k+1;j++){
+            p=p.next;
+        }
+        return p.val;
     }
 }</code></pre>
-<ul>
-<li>换两次，先转置再中线对换</li>
-</ul>
-<p>原矩阵为：<br>[1,2,3]<br>[4,5,6]<br>[7,8,9]</p>
-<p>转置之后，即按斜对角线进行数据交换后的结果为：<br>[1,4,7]<br>[2,5,8]<br>[3,6,9]</p>
-<p>矩阵再根据中间列进行对折，即中间列两边元素进行交换，得到：<br>[7,4,1]<br>[8,5,2]<br>[9,6,3]</p>
+<p>双指针游走：两个指针p、q先都指向head,然后q先向后移动k下保证p、q现在间隔k，然后同步位移p、q，当q读到null时，p则指向倒数第k个节点。</p>
 <pre><code class="java">class Solution {
-    public void rotate(int[][] matrix) {
-        int n = matrix.length;
-        //矩阵转置，即按斜对角线进行数据交换
-        for(int i=0;i&lt;n;i++){
-            for(int j=i;j&lt;n;j++){
-                int temp = matrix[i][j];
-                matrix[i][j] = matrix[j][i];
-                matrix[j][i] = temp;
-            }
+    public int kthToLast(ListNode head, int k) {
+        ListNode p = head;
+        ListNode q = head;
+        for (int i=0;i&lt;k;i++){
+            q=q.next;
         }
-
-        //矩阵根据中间列进行对折，得到最终结果
-        for(int i=0;i&lt;n;i++){
-            for(int j=0;j&lt;n/2;j++){
-                int temp = matrix[i][j];
-                matrix[i][j] = matrix[i][n-j-1];
-                matrix[i][n-j-1] = temp;
-            }
+        while (q!=null){
+            q=q.next;
+            p=p.next;
         }
+        return p.val;
     }
 }</code></pre>
-<h2 id="8-零矩阵"><a href="#8-零矩阵" class="headerlink" title="8.零矩阵"></a>8.<a href="https://leetcode-cn.com/problems/zero-matrix-lcci/" target="_blank" rel="noopener">零矩阵</a></h2><p><strong>思路：</strong>直接找，找到然后遍历行列设为0肯定复杂度太大。可以第一遍遍历先找到0，然后用两个个集合分别记录下i和j，第二遍遍历再将在记录里的下标设为0。</p>
+<h2 id="12-删除中间节点"><a href="#12-删除中间节点" class="headerlink" title="12.删除中间节点"></a>12.<a href="https://leetcode-cn.com/problems/delete-middle-node-lcci/" target="_blank" rel="noopener">删除中间节点</a></h2><p><strong>思路：</strong>由于单向链表无法表示前面节点，所以不能直接将指定节点断链，可以考虑将后面的值依次往前提一个位置，最后一个节点需要抛弃断开。</p>
 <pre><code class="java">class Solution {
-    public void setZeroes(int[][] matrix) {
-        int m = matrix.length;
-        int n = matrix[0].length;
-        HashSet set1 = new HashSet&lt;&gt;();
-        //HashSet set2 = new HashSet&lt;&gt;();用一个集合就可以
-        for (int i=0;i&lt;m;i++){
-            for (int j=0; j&lt;n;j++){
-                if (matrix[i][j]==0){
-                    set1.add(i);
-                    set1.add(j+m);
-                }
-            }
+    public void deleteNode(ListNode node) {
+        ListNode p = node.next;
+        while (p.next!=null){
+            node.val=p.val;
+            node = p;
+            p=p.next;
         }
-        for (int i=0;i&lt;m;i++){
-            for (int j=0;j&lt;n;j++){
-                if (set1.contains(i)||set1.contains(j+m)){
-                    matrix[i][j]=0;
-                }
-            }
-        }
+        node.val=p.val;
+        node.next=null;
     }
 }</code></pre>
-<p>上面方法用集合运行太慢。换成布尔数组快2ms,想法是一样的。</p>
+<p><strong>删除一个节点：只需要将下个节点的值复制到当前节点，然后删除下一个节点就可以了。有种脑筋急转弯的感觉(・ω・｀;),一个一个移是真的蠢。</strong></p>
 <pre><code class="java">class Solution {
-    public void setZeroes(int[][] matrix) {
-        boolean[] line = new boolean[matrix.length];
-        boolean[] column = new boolean[matrix[0].length];
-        // 找出要清零的行列
-        for (int i = 0; i &lt; matrix.length; i++) {
-            for (int j = 0; j &lt; matrix[0].length; j++) {
-                if (matrix[i][j] == 0) {
-                    line[i] = true;
-                    column[j] = true;
-                }
-            }
-        }
-        // 开始对行清零
-        for (int i = 0; i &lt; matrix.length; i++) {
-            if (line[i]) {
-                for (int j = 0; j &lt; matrix[0].length; j++) {
-                    matrix[i][j] = 0;
-                }
-            }
-        }
-
-        // 开始对列清零
-        for (int i = 0; i &lt; matrix[0].length; i++) {
-            if (column[i]) {
-                for (int j = 0; j &lt; matrix.length; j++) {
-                    matrix[j][i] = 0;
-                }
-            }
-        }
-
+    public void deleteNode(ListNode node) {
+        node.val=node.next.val;
+        node.next=node.next.next;
     }
 }</code></pre>
-<ul>
-<li>其他想法：遍历一遍将设0标记在第一行和第一列，然后第一行第一列元素为0 则表示该行/列需要清零。</li>
-</ul>
-<h2 id="9-字符串轮转"><a href="#9-字符串轮转" class="headerlink" title="9.字符串轮转"></a>9.<a href="https://leetcode-cn.com/problems/string-rotation-lcci/" target="_blank" rel="noopener">字符串轮转</a></h2><p><strong>思路：</strong>首先两个字符串长度不同直接返回false，两个都是空串返回true。符合题目特点的s1和s2是每个字符串被分成两个子串，只要这两个子串分别相同则true。遍历s1，找到和s2第一个元素相同的位置，从这个位置分成两个子串分别比较。</p>
+<h2 id="13-分割链表"><a href="#13-分割链表" class="headerlink" title="13.分割链表"></a>13.<a href="https://leetcode-cn.com/problems/partition-list-lcci/" target="_blank" rel="noopener">分割链表</a></h2><p>思路：这题目，读了好几遍也没看懂这个示例为什么是这个输出？暂且理解为顺序遍历只要找到比基准小的就和第一个大于或等于基准的交换。<strong>测试一个用例输出不一样，提交居然通过了！！！！所以这个输出不唯一，只要满足上面条件就可以？</strong>莫名其妙。</p>
 <pre><code class="java">class Solution {
-    public boolean isFlipedString(String s1, String s2) {
-        if (s1.length()!=s2.length()) {
-            return false;
-        }
-        if (s1.length()==0)
-            return true;
-        int l= s1.length();
-        for (int i=0;i&lt;l;i++){
-            if (s1.charAt(i) ==s2.charAt(0)){
-                if (s1.substring(i,l).equals(s2.substring(0,l-i))&amp;&amp;
-                    s1.substring(0,i).equals(s2.substring(l-i,l))){
-                    return true;
-                }
+    public ListNode partition(ListNode head, int x) {
+        ListNode p = head;
+        ListNode pre = p;
+        int t =0;
+        while (p!=null){
+            if (p.val&lt;x){
+                t=pre.val;
+                pre.val=p.val;
+                p.val=t;
+                pre=pre.next;
             }
+            p=p.next;
         }
-        return false;
+        return head;
     }
 }</code></pre>
-<ul>
-<li>只调用一次检查子串方法，运行更快：</li>
-</ul>
-<p>将s1与s1拼接成一个新字符串，则如果符合题意，s2必定是新串的子串。</p>
+<p>经过几次尝试终于可能理解了，力扣的示例有问题，</p>
+<p>测试用例:[3,5,8,5,10,2,1] x=5</p>
+<p>期望结果其实应该是[1,2,3,10,5,8,5]。</p>
+<p>测试用例:[1,4,3,2,5,2] x=3</p>
+<p>期望结果是[2,2,1,5,3,4]。</p>
+<p><strong>规律是，顺序遍历，小于x的就放到链表的最前面，大于等于x的放在第一个大于小于x的前面。</strong></p>
+<p>以[3,5,8,5,10,2,1] x=5为例，过程是：</p>
+<p>3<strong>–</strong>35<strong>–</strong>385<strong>–</strong>3585<strong>–</strong>310585<strong>–</strong>2310585<strong>–</strong>12310585</p>
 <pre><code class="java">class Solution {
-    public boolean isFlipedString(String s1, String s2) {
-        if (s1.length()!=s2.length())
-            return false;
-        return (s1+s1).contains(s2);
+    public ListNode partition(ListNode head, int x) {
+        if (head==null||head.next==null)
+           return head;
+        ListNode p = head.next;
+        ListNode q = p.next;
+        ListNode node=new ListNode(-1);
+        node.next=head;
+        head.next=null;
+        //对于第二个节点，只有当head.val&lt;x&amp;&amp;p.val&gt;=x时才放到head后面，
+        // 其他三种情况都是放到head前面。
+        if (head.val&lt;x&amp;&amp;p.val&gt;=x){
+            p.next=head.next;
+            head.next=p;
+        }else {
+            p.next=node.next;
+            node.next=p;
+        }
+        while (q!=null){
+            p=q;
+            q=q.next;
+            //比x小就头插到node后，大于等于x就头插到head后
+            if (p.val&lt;x){
+                p.next=node.next;
+                node.next=p;
+            }else {
+                p.next=head.next;
+                head.next=p;
+            }
+        }
+        return node.next;
 
     }
 }</code></pre>
@@ -386,18 +356,12 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/05/29/LeetCode3/">
-                        <i class="fa fa-chevron-left"></i>
-                        <span class="hidden-mobile">LeetCode3</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/05/25/LeetCode/">
-                        <span class="hidden-mobile">LeetCode</span>
+                      <a href="/2020/05/28/LeetCode2/">
+                        <span class="hidden-mobile">LeetCode2</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="fa fa-chevron-right"></i>
                       </a>
@@ -598,7 +562,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "LeetCode2&nbsp;",
+        "LeetCode3&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
