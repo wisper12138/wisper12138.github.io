@@ -17,7 +17,7 @@
   <meta name="description" content="zz">
   <meta name="author" content="Wisper">
   <meta name="keywords" content="">
-  <title>LeetCode3 | Wisper</title>
+  <title>LeetCode4 | Wisper</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
@@ -124,7 +124,7 @@
               
                 <p class="mt-3 post-meta">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-                  星期五, 五月 29日 2020, 5:50 下午
+                  星期四, 六月 4日 2020, 1:18 下午
                 </p>
               
 
@@ -133,7 +133,7 @@
                   
                   <span class="post-meta">
                     <i class="far fa-chart-bar"></i>
-                    911 字
+                    1.8k 字
                   </span>
                 
 
@@ -141,7 +141,7 @@
                   
                   <span class="post-meta">
                       <i class="far fa-clock"></i>
-                      4 分钟
+                      8 分钟
                   </span>
                 
 
@@ -173,156 +173,294 @@
           <div class="post-content mx-auto" id="post">
             
             <div class="markdown-body">
-              <hr>
-<h2 id="10-移除重复节点"><a href="#10-移除重复节点" class="headerlink" title="10.移除重复节点"></a>10.<a href="https://leetcode-cn.com/problems/remove-duplicate-node-lcci/" target="_blank" rel="noopener">移除重复节点</a></h2><p><strong>思路：</strong> 双指针，q将所有与当前p相同的断链，p保持不同的链接。</p>
+              <h2 id="14-链表求和"><a href="#14-链表求和" class="headerlink" title="14.链表求和"></a>14.<a href="https://leetcode-cn.com/problems/sum-lists-lcci/" target="_blank" rel="noopener">链表求和</a></h2><p><strong>思路：</strong>先将两个链表转成整数，然后相加再转成链表。这种方法过不了，因为链表可能非常长，超过类型能表示的长度。</p>
+<p>两个链表对应位置相加，模10取余新建节点尾插，进位加到下一组。有两种情况：</p>
+<p>​    1.两个链表长度相同，需要判断是否最后进位了，进位了需要创建值为1的新节点</p>
+<p>​    2.两个链表长度不同，也需要判断最后是否进位了，添加节点。</p>
+<p>这两种情况在最后两个链表都读到结尾处，进行一次判断添加就可以了。</p>
 <pre><code class="java">class Solution {
-    public ListNode removeDuplicateNodes(ListNode head) {
-        ListNode p = head;
-        while (p!=null){
-            ListNode q=p;
-            while (q.next!=null){
-                if (q.next.val==p.val)
-                    q.next=q.next.next;
-                else
-                    q=q.next;
-            }
-            p=p.next;
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        int sum=0;
+        //a表示两个数相加进位的部分，只能是0或1
+        int a=0;
+        ListNode node = new ListNode(-1);
+        ListNode q=node;
+        while (l1!=null&amp;&amp;l2!=null){
+            sum=l1.val+l2.val;
+            ListNode p = new ListNode((sum+a)%10);
+            a=(sum+a)/10;
+            q.next=p;
+            q=p;
+            l1=l1.next;
+            l2=l2.next;
         }
-        return head;
-    }
-}</code></pre>
-<p>也可以消耗额外空间判重比如用HashSet、布尔数组</p>
-<pre><code class="java">class Solution {
-    public ListNode removeDuplicateNodes(ListNode head) {
-        if (head==null)
-            return null;
-        ListNode pre =head;
-        ListNode next=head;
-        Set set = new HashSet();
-        set.add(pre.val);
-        while (pre.next!=null){
-            next=pre.next;
-            if (set.contains(next.val)){
-                pre.next=next.next;
-            }else{
-                set.add(next.val);
-                pre=next;
-            }            
+
+        while (l1!=null){
+            //l1.val最大9，a1或0，所以相加有可能进位
+            ListNode p = new ListNode((l1.val+a)%10);
+            a=(l1.val+a)/10;
+            q.next=p;
+            q=p;
+            l1=l1.next;
         }
-        return head;
-    }
-}</code></pre>
-<h2 id="11-返回倒数第-k-个节点"><a href="#11-返回倒数第-k-个节点" class="headerlink" title="11.返回倒数第 k 个节点"></a>11.<a href="https://leetcode-cn.com/problems/kth-node-from-end-of-list-lcci/" target="_blank" rel="noopener">返回倒数第 k 个节点</a></h2><p><strong>思路：</strong>可以先得到链表长度l，然后从头读返回第l-k+1值</p>
-<pre><code class="java">class Solution {
-    public int kthToLast(ListNode head, int k) {
-        ListNode p = head;
-        int i=0;
-        while (p!=null){
-            i++;
-            p=p.next;
+        while (l2!=null){
+            ListNode p = new ListNode((l2.val+a)%10);
+            a=(l2.val+a)/10;
+            q.next=p;
+            q=p;
+            l2=l2.next;
         }
-        p=head;
-        for (int j=1;j&lt;i-k+1;j++){
-            p=p.next;
+        //如果两个链表长度相同且最后两个和进位不为0，添加进位为新节点。
+        if (a!=0){
+            ListNode p = new ListNode(a);
+            q.next=p;
+            q=p;
         }
-        return p.val;
-    }
-}</code></pre>
-<p>双指针游走：两个指针p、q先都指向head,然后q先向后移动k下保证p、q现在间隔k，然后同步位移p、q，当q读到null时，p则指向倒数第k个节点。</p>
-<pre><code class="java">class Solution {
-    public int kthToLast(ListNode head, int k) {
-        ListNode p = head;
-        ListNode q = head;
-        for (int i=0;i&lt;k;i++){
-            q=q.next;
-        }
-        while (q!=null){
-            q=q.next;
-            p=p.next;
-        }
-        return p.val;
-    }
-}</code></pre>
-<h2 id="12-删除中间节点"><a href="#12-删除中间节点" class="headerlink" title="12.删除中间节点"></a>12.<a href="https://leetcode-cn.com/problems/delete-middle-node-lcci/" target="_blank" rel="noopener">删除中间节点</a></h2><p><strong>思路：</strong>由于单向链表无法表示前面节点，所以不能直接将指定节点断链，可以考虑将后面的值依次往前提一个位置，最后一个节点需要抛弃断开。</p>
-<pre><code class="java">class Solution {
-    public void deleteNode(ListNode node) {
-        ListNode p = node.next;
-        while (p.next!=null){
-            node.val=p.val;
-            node = p;
-            p=p.next;
-        }
-        node.val=p.val;
-        node.next=null;
-    }
-}</code></pre>
-<p><strong>删除一个节点：只需要将下个节点的值复制到当前节点，然后删除下一个节点就可以了。有种脑筋急转弯的感觉(・ω・｀;),一个一个移是真的蠢。</strong></p>
-<pre><code class="java">class Solution {
-    public void deleteNode(ListNode node) {
-        node.val=node.next.val;
-        node.next=node.next.next;
-    }
-}</code></pre>
-<h2 id="13-分割链表"><a href="#13-分割链表" class="headerlink" title="13.分割链表"></a>13.<a href="https://leetcode-cn.com/problems/partition-list-lcci/" target="_blank" rel="noopener">分割链表</a></h2><p>思路：这题目，读了好几遍也没看懂这个示例为什么是这个输出？暂且理解为顺序遍历只要找到比基准小的就和第一个大于或等于基准的交换。<strong>测试一个用例输出不一样，提交居然通过了！！！！所以这个输出不唯一，只要满足上面条件就可以？</strong>莫名其妙。</p>
-<pre><code class="java">class Solution {
-    public ListNode partition(ListNode head, int x) {
-        ListNode p = head;
-        ListNode pre = p;
-        int t =0;
-        while (p!=null){
-            if (p.val&lt;x){
-                t=pre.val;
-                pre.val=p.val;
-                p.val=t;
-                pre=pre.next;
-            }
-            p=p.next;
-        }
-        return head;
-    }
-}</code></pre>
-<p>经过几次尝试终于可能理解了，力扣的示例有问题，</p>
-<p>测试用例:[3,5,8,5,10,2,1] x=5</p>
-<p>期望结果其实应该是[1,2,3,10,5,8,5]。</p>
-<p>测试用例:[1,4,3,2,5,2] x=3</p>
-<p>期望结果是[2,2,1,5,3,4]。</p>
-<p><strong>规律是，顺序遍历，小于x的就放到链表的最前面，大于等于x的放在第一个大于小于x的前面。</strong></p>
-<p>以[3,5,8,5,10,2,1] x=5为例，过程是：</p>
-<p>3<strong>–</strong>35<strong>–</strong>385<strong>–</strong>3585<strong>–</strong>310585<strong>–</strong>2310585<strong>–</strong>12310585</p>
-<pre><code class="java">class Solution {
-    public ListNode partition(ListNode head, int x) {
-        if (head==null||head.next==null)
-           return head;
-        ListNode p = head.next;
-        ListNode q = p.next;
-        ListNode node=new ListNode(-1);
-        node.next=head;
-        head.next=null;
-        //对于第二个节点，只有当head.val&lt;x&amp;&amp;p.val&gt;=x时才放到head后面，
-        // 其他三种情况都是放到head前面。
-        if (head.val&lt;x&amp;&amp;p.val&gt;=x){
-            p.next=head.next;
-            head.next=p;
-        }else {
-            p.next=node.next;
-            node.next=p;
-        }
-        while (q!=null){
-            p=q;
-            q=q.next;
-            //比x小就头插到node后，大于等于x就头插到head后
-            if (p.val&lt;x){
-                p.next=node.next;
-                node.next=p;
-            }else {
-                p.next=head.next;
-                head.next=p;
-            }
-        }
+
+        q.next=null;
         return node.next;
+    }
+}</code></pre>
+<p>递归：</p>
+<pre><code class="java">class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        return add(l1,l2,0);
+    }
+    ListNode add(ListNode l1,ListNode l2,int rabit){
+        //循环结束条件是链表都读完，且没有进位。
+        if(l1==null &amp;&amp; l2==null &amp;&amp; rabit==0) return null;
+        if(l1==null &amp;&amp; l2==null &amp;&amp; rabit&gt;0) return new ListNode(rabit);
+        int num1 =0,num2=0;
+        if(l1!=null){
+            num1 = l1.val;
+        }
+        if(l2!=null){
+            num2 = l2.val;
+        }
+        int num = (num1+num2+rabit)%10;
+        rabit  = (num1+num2+rabit)/10;
+        ListNode node = new ListNode(num);
+        if(l1!=null){
+            l1 = l1.next;
+        }else{
+            l1 =null;
+        }
+        if(l2!=null){
+            l2 = l2.next;
+        }else{
+            l2 = null;
+        }
+        ListNode node2 = add(l1,l2,rabit);
+        node.next = node2;
+        return node;
 
     }
 }</code></pre>
+<p>进阶：假设这些数位是正向存放的</p>
+<p>示例：</p>
+<p>输入：(6 -&gt; 1 -&gt; 7) + (2 -&gt; 9 -&gt; 5)，即617 + 295<br>       输出：9 -&gt; 1 -&gt; 2，即912</p>
+<p>1.可以把两个链表先头插法转成前面的顺序，按照上面方法做。</p>
+<p>2.也可以用两个栈，或数组存两个链表，再用上面的方法做</p>
+<h2 id="15-回文链表"><a href="#15-回文链表" class="headerlink" title="15.回文链表"></a>15.<a href="https://leetcode-cn.com/problems/palindrome-linked-list-lcci/" target="_blank" rel="noopener">回文链表</a></h2><p><strong>思路：</strong>回文特点是中心对称，从前读和从后读一样。新建一个链表头插为链表的反向，然后同步读两个链表比较值。</p>
+<pre><code class="java">class Solution {
+    public boolean isPalindrome(ListNode head) {
+        ListNode p = head;
+        ListNode node = new ListNode(0);
+        node.next=null;
+        while (p!=null){
+            ListNode r = new ListNode(p.val);
+            r.next=node.next;
+            node.next=r;
+            p=p.next;
+        }
+        node=node.next;
+        while (node!=null){
+            if (node.val!=head.val)
+                return false;
+            head=head.next;
+            node=node.next;
+        }
+        return true;
+    }
+}</code></pre>
+<ul>
+<li>栈：可以使序列反向</li>
+</ul>
+<pre><code class="java">class Solution {
+    public boolean isPalindrome(ListNode head) {
+        ListNode p = head;
+        Stack&lt;Integer&gt; stack =  new Stack&lt;Integer&gt;();
+        while (p!=null){
+            stack.push(p.val);
+            p=p.next;
+        }
+        while (!stack.empty()){
+            if (stack.pop()!=head.val)
+                return false;
+            head=head.next;
+
+        }
+        return true;
+    }
+}</code></pre>
+<ul>
+<li><p>可以先遍历出链表长度，然后将前一半头插到新链表，然后和后一半比较。</p>
+</li>
+<li><p>最优解：<strong>快慢指针</strong>遍历找到中点，然后将后半部分或前部分翻转，进行比较。</p>
+<p>O(n) 时间复杂度和 O(1) 空间复杂度</p>
+</li>
+</ul>
+<pre><code class="java">class Solution {
+    public boolean isPalindrome(ListNode head) {
+        //快指针p一次读两个，慢指针q一次读一个
+        ListNode p = head;
+        ListNode q = head;
+        ListNode r = null;
+        ListNode t = null;
+        while (p!=null&amp;&amp;p.next!=null){
+            p=p.next.next;
+            r=q;
+            q=q.next;
+            //头插前半部分
+            r.next=t;
+            t=r;
+        }
+        //p每次读两个，如果链表为奇数，则p指向最后一个位置，q指向最中间的位置。
+        //如果链表为偶数，则p指向null,q指向后半部分第一个。
+        if (p!=null){
+            //从后半部分第一个开始比较，第一种情况需要将q后移一位。
+            q=q.next;
+        }
+        while (q!=null){
+            if (q.val!=t.val)
+                return false;
+            else {
+                q=q.next;
+                t=t.next;
+            }
+        }
+        return true;
+    }
+}</code></pre>
+<h2 id="16-链表相交"><a href="#16-链表相交" class="headerlink" title="16.链表相交"></a>16.<a href="https://leetcode-cn.com/problems/intersection-of-two-linked-lists-lcci/" target="_blank" rel="noopener">链表相交</a></h2><p>思路：两个链表相交特点是有指针相同，且相同节点之后节点都相同，但两个链表不一定相等，所以不能对应去比较。可以让两个链表遍历完再回到对方的头节点遍历，此时会出现长链表刚回到头节点，短链表已经读到头节点后几个了。此时后短链表距离头节点的距离就是相交链表的不想交部分的差值。现在可以将两个链表同时遍历并对应比较，第一次相同的位置就是相交点。</p>
+<p>短链长度=不相交部分a+相交长度c</p>
+<p>长链长度=不相交部分b+相交c</p>
+<p>两个链表都走了a+b+c然后相交。</p>
+<p><strong>总结就是找两个链表不想交部分的长度差值，然后长的链表先遍历这个差值长度，然后同步遍历比较。否则需要O(M*N)复杂度。因此第二种方法也可以先各自遍历求长度差</strong>。</p>
+<pre><code class="java">public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode p = headA;
+        ListNode q = headB;
+        while (p != q) {
+            p = p == null ? headB : p.next;
+            q = q == null ? headA : q.next;
+        }
+        return p;
+    }
+}</code></pre>
+<pre><code class="java">public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode p = headA;
+        ListNode q = headB;
+        int l1 = 0, l2 = 0;
+        while (p != null) {
+            p = p.next;
+            l1++;
+        }
+        while (q != null) {
+            q = q.next;
+            l2++;
+        }
+        int l = Math.abs(l1 - l2);
+        for (int i = 0; i &lt; l; i++) {
+            if (l1 &gt; l2) {
+                headA = headA.next;
+            } else
+                headB = headB.next;
+        }
+        while (headA != headB) {
+            headA = headA.next;
+            headB = headB.next;
+        }
+        return headA;
+    }
+}</code></pre>
+<h2 id="17-环路检测"><a href="#17-环路检测" class="headerlink" title="17.环路检测"></a>17.<a href="https://leetcode-cn.com/problems/linked-list-cycle-lcci/" target="_blank" rel="noopener">环路检测</a></h2><p><strong>思路：</strong>快慢指针，如果有环两个指针一定会相遇。</p>
+<p><img src="%E7%8E%AF%E8%B7%AF%E6%A3%80%E6%B5%8B.png" srcset="/img/loading.gif" alt=""></p>
+<p>设慢指针走到相遇点走了a+b+nc,快指针走了a+b+mc,而快指针路程是慢指针两倍2a+2b+2nc</p>
+<p>所以可以得出 a+b+mc=2a+2b+2nc。整理得a=(m-2n）c-b。</p>
+<p>也就是说如果一个指针现在从头出发走到入环点，走了a，另一个指针从相遇点走了m-2n圈c，回到了相遇点再后退b，就会在入环点和a相遇。</p>
+<p><strong>总结：一个指针从头出发一个指针从快慢指针相遇点出发，必会相遇在入环。所以任务变成先找相遇点，再找入环点。</strong></p>
+<pre><code class="java">public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        ListNode p = head;
+        ListNode q = head;
+        while (q!=null&amp;&amp;q.next!=null){
+            p=p.next;
+            q=q.next.next;
+            if (p==q){
+                q=head;
+                while (p!=q){
+                    q=q.next;
+                    p=p.next;
+                }
+                return p;
+            }
+        }
+        return null;
+    }
+}</code></pre>
+<ul>
+<li>HashSet判指针重</li>
+</ul>
+<pre><code class="java">public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        ListNode p = head;
+        HashSet&lt;ListNode&gt; set = new HashSet&lt;&gt;();
+        while (p!=null){
+            if (!set.contains(p)){
+                set.add(p);
+                p=p.next;
+            }else
+                return p;
+        }
+        return null;
+    }
+}</code></pre>
+<p>超时的两种想法：</p>
+<ul>
+<li>每次断开一个节点，如果是环开头节点则从后面继续读还会读到，重复读到断开节点的下一个节点则说明断开节点不是环开头，此时应该把断开节点再连上，开始测试下一个。</li>
+</ul>
+<pre><code class="java">public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        if (head == null)
+            return head;
+        ListNode p = head;
+        ListNode q = p.next;
+        ListNode r = p.next;
+        while (true){
+            p.next=null;
+            if (r==p){
+                p.next = q;
+                //System.out.println(p.val);
+                return p;
+            }
+            if (r==null){
+                p.next = q;
+                //System.out.println(r.val);
+                return r;
+            }
+            r=r.next;
+            if (r==q){
+                p.next=q;
+                p=q;
+                q=p.next;
+                r=p.next;
+            }
+        }
+    }
+}</code></pre>
+<p>回环法：把每个节点的next指向自己，直到环开头已经指向自己了。</p>
 
             </div>
             <hr>
@@ -356,18 +494,12 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/06/04/LeetCode4/">
-                        <i class="fa fa-chevron-left"></i>
-                        <span class="hidden-mobile">LeetCode4</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/05/28/LeetCode2/">
-                        <span class="hidden-mobile">LeetCode2</span>
+                      <a href="/2020/05/29/LeetCode3/">
+                        <span class="hidden-mobile">LeetCode3</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="fa fa-chevron-right"></i>
                       </a>
@@ -568,7 +700,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "LeetCode3&nbsp;",
+        "LeetCode4&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
