@@ -17,7 +17,7 @@
   <meta name="description" content="zz">
   <meta name="author" content="Wisper">
   <meta name="keywords" content="">
-  <title>LeetCode4 | Wisper</title>
+  <title>LeetCode5 | Wisper</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
 <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
@@ -124,7 +124,7 @@
               
                 <p class="mt-3 post-meta">
                   <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-                  星期四, 六月 4日 2020, 1:18 下午
+                  星期日, 六月 7日 2020, 10:30 上午
                 </p>
               
 
@@ -133,7 +133,7 @@
                   
                   <span class="post-meta">
                     <i class="far fa-chart-bar"></i>
-                    1.8k 字
+                    1.9k 字
                   </span>
                 
 
@@ -141,7 +141,7 @@
                   
                   <span class="post-meta">
                       <i class="far fa-clock"></i>
-                      8 分钟
+                      9 分钟
                   </span>
                 
 
@@ -173,294 +173,440 @@
           <div class="post-content mx-auto" id="post">
             
             <div class="markdown-body">
-              <h2 id="14-链表求和"><a href="#14-链表求和" class="headerlink" title="14.链表求和"></a>14.<a href="https://leetcode-cn.com/problems/sum-lists-lcci/" target="_blank" rel="noopener">链表求和</a></h2><p><strong>思路：</strong>先将两个链表转成整数，然后相加再转成链表。这种方法过不了，因为链表可能非常长，超过类型能表示的长度。</p>
-<p>两个链表对应位置相加，模10取余新建节点尾插，进位加到下一组。有两种情况：</p>
-<p>​    1.两个链表长度相同，需要判断是否最后进位了，进位了需要创建值为1的新节点</p>
-<p>​    2.两个链表长度不同，也需要判断最后是否进位了，添加节点。</p>
-<p>这两种情况在最后两个链表都读到结尾处，进行一次判断添加就可以了。</p>
-<pre><code class="java">class Solution {
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        int sum=0;
-        //a表示两个数相加进位的部分，只能是0或1
-        int a=0;
-        ListNode node = new ListNode(-1);
-        ListNode q=node;
-        while (l1!=null&amp;&amp;l2!=null){
-            sum=l1.val+l2.val;
-            ListNode p = new ListNode((sum+a)%10);
-            a=(sum+a)/10;
-            q.next=p;
-            q=p;
-            l1=l1.next;
-            l2=l2.next;
-        }
+              <h2 id="18-三合一"><a href="#18-三合一" class="headerlink" title="18.三合一"></a>18.<a href="https://leetcode-cn.com/problems/three-in-one-lcci/" target="_blank" rel="noopener">三合一</a></h2><p><strong>思路：</strong>用一个数组表示三个栈，并且<strong>栈需要一个栈顶指针，用来判断是否栈满，能否压栈弹栈</strong>。可以将数组空间设为3+3stackSize分四段，第一段下标0-2对应stackNum，表示三个数组当前存数据长度，第二段表示第一个栈下标3-2+stackSize，第三段表示第二个栈下标3+stackSize-2+2stackSize,第三个栈下标3+2stackSize-2+3stackSize。<strong>栈下标开始通式3+stackNum*stackSize</strong>，<strong>stack[stack[stackNum]+3+stackNum*stackSize]表示当前栈的栈顶的下一个操作位置。</strong></p>
+<pre><code class="java">class TripleInOne {
+    private int[]stack;
+    private int stackSize;
+    public TripleInOne(int stackSize) {
+        this.stackSize=stackSize;
+        stack = new int[3+3*stackSize];
+    }
 
-        while (l1!=null){
-            //l1.val最大9，a1或0，所以相加有可能进位
-            ListNode p = new ListNode((l1.val+a)%10);
-            a=(l1.val+a)/10;
-            q.next=p;
-            q=p;
-            l1=l1.next;
-        }
-        while (l2!=null){
-            ListNode p = new ListNode((l2.val+a)%10);
-            a=(l2.val+a)/10;
-            q.next=p;
-            q=p;
-            l2=l2.next;
-        }
-        //如果两个链表长度相同且最后两个和进位不为0，添加进位为新节点。
-        if (a!=0){
-            ListNode p = new ListNode(a);
-            q.next=p;
-            q=p;
-        }
+    public void push(int stackNum, int value) {
+        if (stack[stackNum]&gt;=stackSize)
+            return;
+        stack[stack[stackNum]+3+stackNum*stackSize]=value;
+        stack[stackNum]++;
+        return;
+    }
 
-        q.next=null;
-        return node.next;
+    public int pop(int stackNum) {
+        if (stack[stackNum]==0)
+            return -1;
+        stack[stackNum]--;
+        return stack[stack[stackNum]+3+stackNum*stackSize];
+    }
+
+    public int peek(int stackNum) {
+        if (stack[stackNum]==0)
+            return -1;
+        return stack[stack[stackNum]-1+3+stackNum*stackSize];
+    }
+
+    public boolean isEmpty(int stackNum) {
+        if (stack[stackNum]==0)
+            return true;
+        return false;
     }
 }</code></pre>
-<p>递归：</p>
-<pre><code class="java">class Solution {
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        return add(l1,l2,0);
+<p>将重复计算写成方法，提高效率。</p>
+<pre><code class="java">class TripleInOne {
+    private int[]stack;
+    private int stackSize;
+    public TripleInOne(int stackSize) {
+        this.stackSize=stackSize;
+        stack = new int[3+3*stackSize];
     }
-    ListNode add(ListNode l1,ListNode l2,int rabit){
-        //循环结束条件是链表都读完，且没有进位。
-        if(l1==null &amp;&amp; l2==null &amp;&amp; rabit==0) return null;
-        if(l1==null &amp;&amp; l2==null &amp;&amp; rabit&gt;0) return new ListNode(rabit);
-        int num1 =0,num2=0;
-        if(l1!=null){
-            num1 = l1.val;
-        }
-        if(l2!=null){
-            num2 = l2.val;
-        }
-        int num = (num1+num2+rabit)%10;
-        rabit  = (num1+num2+rabit)/10;
-        ListNode node = new ListNode(num);
-        if(l1!=null){
-            l1 = l1.next;
+    public int len(int stackNum,int stackSize){
+        int l = stack[stackNum]+3+stackNum*stackSize;
+        return l;
+    }
+    public void push(int stackNum, int value) {
+        if (stack[stackNum]&gt;=stackSize)
+            return;
+        stack[len(stackNum,stackSize)]=value;
+        stack[stackNum]++;
+        return;
+    }
+
+    public int pop(int stackNum) {
+        if (stack[stackNum]==0)
+            return -1;
+        stack[stackNum]--;
+        return stack[len(stackNum,stackSize)];
+    }
+
+    public int peek(int stackNum) {
+        if (stack[stackNum]==0)
+            return -1;
+        return stack[len(stackNum,stackSize)-1];
+    }
+
+    public boolean isEmpty(int stackNum) {
+        if (stack[stackNum]==0)
+            return true;
+        return false;
+    }
+}</code></pre>
+<h2 id="19-栈的最小值"><a href="#19-栈的最小值" class="headerlink" title="19.栈的最小值"></a>19.<a href="https://leetcode-cn.com/problems/min-stack-lcci/" target="_blank" rel="noopener">栈的最小值</a></h2><p><strong>思路：</strong>用一个栈的栈顶来表示当前最小值。如果x比栈顶小则压入x，否则则再一次压入栈顶元素。出栈两个栈同步出就可以。</p>
+<pre><code class="java">class MinStack {
+    private Stack&lt;Integer&gt; stack ;
+    private Stack&lt;Integer&gt; minstack;
+    /** initialize your data structure here. */
+    public MinStack() {
+        stack =new Stack&lt;&gt;();
+        minstack = new Stack&lt;&gt;();
+    }
+
+    public void push(int x) {
+        stack.push(x);
+        if (minstack.size()&lt;1){
+            minstack.push(x);
         }else{
-            l1 =null;
-        }
-        if(l2!=null){
-            l2 = l2.next;
-        }else{
-            l2 = null;
-        }
-        ListNode node2 = add(l1,l2,rabit);
-        node.next = node2;
-        return node;
-
-    }
-}</code></pre>
-<p>进阶：假设这些数位是正向存放的</p>
-<p>示例：</p>
-<p>输入：(6 -&gt; 1 -&gt; 7) + (2 -&gt; 9 -&gt; 5)，即617 + 295<br>       输出：9 -&gt; 1 -&gt; 2，即912</p>
-<p>1.可以把两个链表先头插法转成前面的顺序，按照上面方法做。</p>
-<p>2.也可以用两个栈，或数组存两个链表，再用上面的方法做</p>
-<h2 id="15-回文链表"><a href="#15-回文链表" class="headerlink" title="15.回文链表"></a>15.<a href="https://leetcode-cn.com/problems/palindrome-linked-list-lcci/" target="_blank" rel="noopener">回文链表</a></h2><p><strong>思路：</strong>回文特点是中心对称，从前读和从后读一样。新建一个链表头插为链表的反向，然后同步读两个链表比较值。</p>
-<pre><code class="java">class Solution {
-    public boolean isPalindrome(ListNode head) {
-        ListNode p = head;
-        ListNode node = new ListNode(0);
-        node.next=null;
-        while (p!=null){
-            ListNode r = new ListNode(p.val);
-            r.next=node.next;
-            node.next=r;
-            p=p.next;
-        }
-        node=node.next;
-        while (node!=null){
-            if (node.val!=head.val)
-                return false;
-            head=head.next;
-            node=node.next;
-        }
-        return true;
-    }
-}</code></pre>
-<ul>
-<li>栈：可以使序列反向</li>
-</ul>
-<pre><code class="java">class Solution {
-    public boolean isPalindrome(ListNode head) {
-        ListNode p = head;
-        Stack&lt;Integer&gt; stack =  new Stack&lt;Integer&gt;();
-        while (p!=null){
-            stack.push(p.val);
-            p=p.next;
-        }
-        while (!stack.empty()){
-            if (stack.pop()!=head.val)
-                return false;
-            head=head.next;
-
-        }
-        return true;
-    }
-}</code></pre>
-<ul>
-<li><p>可以先遍历出链表长度，然后将前一半头插到新链表，然后和后一半比较。</p>
-</li>
-<li><p>最优解：<strong>快慢指针</strong>遍历找到中点，然后将后半部分或前部分翻转，进行比较。</p>
-<p>O(n) 时间复杂度和 O(1) 空间复杂度</p>
-</li>
-</ul>
-<pre><code class="java">class Solution {
-    public boolean isPalindrome(ListNode head) {
-        //快指针p一次读两个，慢指针q一次读一个
-        ListNode p = head;
-        ListNode q = head;
-        ListNode r = null;
-        ListNode t = null;
-        while (p!=null&amp;&amp;p.next!=null){
-            p=p.next.next;
-            r=q;
-            q=q.next;
-            //头插前半部分
-            r.next=t;
-            t=r;
-        }
-        //p每次读两个，如果链表为奇数，则p指向最后一个位置，q指向最中间的位置。
-        //如果链表为偶数，则p指向null,q指向后半部分第一个。
-        if (p!=null){
-            //从后半部分第一个开始比较，第一种情况需要将q后移一位。
-            q=q.next;
-        }
-        while (q!=null){
-            if (q.val!=t.val)
-                return false;
-            else {
-                q=q.next;
-                t=t.next;
-            }
-        }
-        return true;
-    }
-}</code></pre>
-<h2 id="16-链表相交"><a href="#16-链表相交" class="headerlink" title="16.链表相交"></a>16.<a href="https://leetcode-cn.com/problems/intersection-of-two-linked-lists-lcci/" target="_blank" rel="noopener">链表相交</a></h2><p>思路：两个链表相交特点是有指针相同，且相同节点之后节点都相同，但两个链表不一定相等，所以不能对应去比较。可以让两个链表遍历完再回到对方的头节点遍历，此时会出现长链表刚回到头节点，短链表已经读到头节点后几个了。此时后短链表距离头节点的距离就是相交链表的不想交部分的差值。现在可以将两个链表同时遍历并对应比较，第一次相同的位置就是相交点。</p>
-<p>短链长度=不相交部分a+相交长度c</p>
-<p>长链长度=不相交部分b+相交c</p>
-<p>两个链表都走了a+b+c然后相交。</p>
-<p><strong>总结就是找两个链表不想交部分的长度差值，然后长的链表先遍历这个差值长度，然后同步遍历比较。否则需要O(M*N)复杂度。因此第二种方法也可以先各自遍历求长度差</strong>。</p>
-<pre><code class="java">public class Solution {
-    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        ListNode p = headA;
-        ListNode q = headB;
-        while (p != q) {
-            p = p == null ? headB : p.next;
-            q = q == null ? headA : q.next;
-        }
-        return p;
-    }
-}</code></pre>
-<pre><code class="java">public class Solution {
-    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        ListNode p = headA;
-        ListNode q = headB;
-        int l1 = 0, l2 = 0;
-        while (p != null) {
-            p = p.next;
-            l1++;
-        }
-        while (q != null) {
-            q = q.next;
-            l2++;
-        }
-        int l = Math.abs(l1 - l2);
-        for (int i = 0; i &lt; l; i++) {
-            if (l1 &gt; l2) {
-                headA = headA.next;
-            } else
-                headB = headB.next;
-        }
-        while (headA != headB) {
-            headA = headA.next;
-            headB = headB.next;
-        }
-        return headA;
-    }
-}</code></pre>
-<h2 id="17-环路检测"><a href="#17-环路检测" class="headerlink" title="17.环路检测"></a>17.<a href="https://leetcode-cn.com/problems/linked-list-cycle-lcci/" target="_blank" rel="noopener">环路检测</a></h2><p><strong>思路：</strong>快慢指针，如果有环两个指针一定会相遇。</p>
-<p><img src="%E7%8E%AF%E8%B7%AF%E6%A3%80%E6%B5%8B.png" srcset="/img/loading.gif" alt=""></p>
-<p>设慢指针走到相遇点走了a+b+nc,快指针走了a+b+mc,而快指针路程是慢指针两倍2a+2b+2nc</p>
-<p>所以可以得出 a+b+mc=2a+2b+2nc。整理得a=(m-2n）c-b。</p>
-<p>也就是说如果一个指针现在从头出发走到入环点，走了a，另一个指针从相遇点走了m-2n圈c，回到了相遇点再后退b，就会在入环点和a相遇。</p>
-<p><strong>总结：一个指针从头出发一个指针从快慢指针相遇点出发，必会相遇在入环。所以任务变成先找相遇点，再找入环点。</strong></p>
-<pre><code class="java">public class Solution {
-    public ListNode detectCycle(ListNode head) {
-        ListNode p = head;
-        ListNode q = head;
-        while (q!=null&amp;&amp;q.next!=null){
-            p=p.next;
-            q=q.next.next;
-            if (p==q){
-                q=head;
-                while (p!=q){
-                    q=q.next;
-                    p=p.next;
-                }
-                return p;
-            }
-        }
-        return null;
-    }
-}</code></pre>
-<ul>
-<li>HashSet判指针重</li>
-</ul>
-<pre><code class="java">public class Solution {
-    public ListNode detectCycle(ListNode head) {
-        ListNode p = head;
-        HashSet&lt;ListNode&gt; set = new HashSet&lt;&gt;();
-        while (p!=null){
-            if (!set.contains(p)){
-                set.add(p);
-                p=p.next;
+            if (x&lt;minstack.peek()){
+                minstack.push(x);
             }else
-                return p;
+                minstack.push(minstack.peek());
         }
-        return null;
+
+    }
+
+    public void pop() {
+        stack.pop();
+        minstack.pop();
+    }
+
+    public int top() {
+        return stack.peek();
+    }
+
+    public int getMin() {
+        return minstack.peek();
     }
 }</code></pre>
-<p>超时的两种想法：</p>
-<ul>
-<li>每次断开一个节点，如果是环开头节点则从后面继续读还会读到，重复读到断开节点的下一个节点则说明断开节点不是环开头，此时应该把断开节点再连上，开始测试下一个。</li>
-</ul>
-<pre><code class="java">public class Solution {
-    public ListNode detectCycle(ListNode head) {
-        if (head == null)
-            return head;
-        ListNode p = head;
-        ListNode q = p.next;
-        ListNode r = p.next;
-        while (true){
-            p.next=null;
-            if (r==p){
-                p.next = q;
-                //System.out.println(p.val);
-                return p;
-            }
-            if (r==null){
-                p.next = q;
-                //System.out.println(r.val);
-                return r;
-            }
-            r=r.next;
-            if (r==q){
-                p.next=q;
-                p=q;
-                q=p.next;
-                r=p.next;
-            }
+<p>可以用链表来存最小值会快一点，思路和上面一样。</p>
+<pre><code class="java">class MinStack {
+    class Node {
+        int val;
+        int min;
+        Node next;
+
+        public Node(int val, int min) {
+            this.val = val;
+            this.min = min;
+        }
+
+        public Node(int val, int min, Node next) {
+            this.val = val;
+            this.min = min;
+            this.next = next;
         }
     }
+
+    private Node head = null;
+
+    /** initialize your data structure here. */
+    public MinStack() {
+
+    }
+
+    public void push(int x) {
+        if (head == null) 
+            head = new Node(x, x);
+        else {
+            int min = Math.min(x, head.min);
+            Node node = new Node(x, min, head);
+            head = node;
+        }
+    }
+
+    public void pop() {
+        if (head == null) 
+            return;
+        head = head.next;
+    }
+
+    public int top() {
+        return head.val;
+    }
+
+    public int getMin() {
+        return head.min;
+    }
 }</code></pre>
-<p>回环法：把每个节点的next指向自己，直到环开头已经指向自己了。</p>
+<h2 id="20-堆盘子"><a href="#20-堆盘子" class="headerlink" title="20.堆盘子"></a>20.<a href="https://leetcode-cn.com/problems/stack-of-plates-lcci/" target="_blank" rel="noopener">堆盘子</a></h2><p><strong>思路：</strong>每个栈的大小为cap，超过容量则新建一个栈。需要用一个额外空间维护栈的索引，用来找到指定索引的栈进行出栈，当一个栈元素都出栈完，则需要删除该栈的索引，并且后面的索引前移补上。</p>
+<p>长度不确定需要做到动态添加，找到指定索引的元素并删除，可以用的数据结构有<strong>栈，ArrayList等</strong></p>
+<pre><code class="java">class StackOfPlates {
+    private Stack&lt;Stack&lt;Integer&gt;&gt; stacks ;
+    private int cap;
+    private Stack&lt;Integer&gt; stack;//放在方法外可以提高效率
+    public StackOfPlates(int cap) {
+        this.cap=cap;
+        stacks = new Stack&lt;&gt;();
+
+    }
+
+    public void push(int val) {
+        if (cap==0)
+            return;
+        if (stacks.size()==0||stacks.peek().size()==cap){
+             stack =new Stack&lt;&gt;();
+            stack.push(val);
+            stacks.push(stack);
+        }else{
+            //没有超过容量，在stacks栈顶的栈进行压栈
+            stacks.peek().push(val);
+        }
+    }
+    //stacks栈顶栈出栈
+    public int pop() {
+        if (stacks.size()==0)
+            return -1;
+        //先将栈顶元素出栈，如果出栈完栈空了需要在stacks中删除该栈。
+        int a =stacks.peek().pop();
+        if (stacks.peek().size()==0){
+            stacks.pop();
+        }
+
+        return a;
+    }
+
+    public int popAt(int index) {
+        //注意判断index的合法性
+        if (index&gt;=stacks.size()||stacks.size()==0){
+            return -1;
+        }
+        //先将指定索引位置栈的栈顶元素出栈，再判断栈是否为空，空则用栈的remove()方法删除，后面索引会前移
+        int l=stacks.get(index).pop();
+        if (stacks.get(index).size()==0){
+            stacks.remove(index);
+        }
+        return l;
+    }
+}</code></pre>
+<pre><code class="java">class StackOfPlates {
+    private ArrayList&lt;Stack&lt;Integer&gt;&gt; stacks;
+    private int capacity;
+    public StackOfPlates(int cap) {
+        this.stacks = new ArrayList&lt;Stack&lt;Integer&gt;&gt;();
+        this.capacity = cap;
+    }
+
+    public void push(int val) {
+        if (capacity &lt;= 0)
+            return;
+        Stack last = getLastStack();
+        if (last != null &amp;&amp; last.size() &lt; capacity) {
+            last.push(val);
+        } else {
+            Stack&lt;Integer&gt; newStack = new Stack&lt;Integer&gt;();
+            newStack.push(val);
+            stacks.add(newStack);
+        }
+    }
+
+    public int pop() {
+        return popAt(stacks.size() - 1);
+    }
+
+    public int popAt(int index) {
+        if (index &lt; 0 || index &gt;= stacks.size()) {
+            return -1;
+        }
+        Stack&lt;Integer&gt; stack = stacks.get(index);
+        if (stack.size() == 0)
+            return -1;
+        int val = stack.pop();
+        if (stack.size() == 0) {
+            stacks.remove(index);
+        }
+        return val;
+    }
+
+    public Stack getLastStack() {
+        if (stacks.size() == 0)
+            return null;
+        return stacks.get(stacks.size() - 1);
+    }</code></pre>
+<h2 id="21-化栈为队"><a href="#21-化栈为队" class="headerlink" title="21.化栈为队"></a>21.<a href="https://leetcode-cn.com/problems/implement-queue-using-stacks-lcci/" target="_blank" rel="noopener">化栈为队</a></h2><p><strong>思路：</strong>一个栈进数据，然后将压栈的栈压入第二个栈实现队列先进先出。</p>
+<pre><code class="java">class MyQueue {
+    Stack&lt;Integer&gt; stack1 ;
+    Stack&lt;Integer&gt; stack2 ;
+    /** Initialize your data structure here. */
+    public MyQueue() {
+        stack1 = new Stack&lt;&gt;();
+        stack2 = new Stack&lt;&gt;();
+    }
+
+    /** Push element x to the back of queue. */
+    public void push(int x) {
+        stack1.push(x);
+    }
+
+    /** Removes the element from in front of queue and returns that element. */
+    public int pop() {
+        peek();
+        return stack2.pop();
+    }
+
+    /** Get the front element. */
+    public int peek() {
+        if (empty())
+            return -1;
+        //stack2为空时才将stack1中元素压过来，因为stack2中元素都比stack1中元素先进入队列。
+        if (stack2.isEmpty()){
+            while (!stack1.isEmpty()){
+                stack2.push(stack1.pop());
+            }
+        }
+        return stack2.peek();
+    }
+
+    /** Returns whether the queue is empty. */
+    public boolean empty() {
+        return stack1.isEmpty()&amp;&amp;stack2.isEmpty();
+    }
+}</code></pre>
+<h2 id="22-栈排序"><a href="#22-栈排序" class="headerlink" title="22.栈排序"></a><strong>22.<a href="https://leetcode-cn.com/problems/sort-of-stacks-lcci/" target="_blank" rel="noopener">栈排序</a></strong></h2><p><strong>思路：</strong>可以用两个栈，在push时候排序，对每一个压入的元素和栈顶比较大小，大于栈顶就将栈顶元素压入另一个栈，然后再比较直到找到第一个比val大的或者栈空，最后将另一个栈中有序的压回当前栈。 </p>
+<pre><code class="java">class SortedStack {
+    private Stack&lt;Integer&gt;stack1 ;
+    private Stack&lt;Integer&gt;stack2 ;
+    public SortedStack() {
+        stack1=new Stack&lt;&gt;();
+        stack2=new Stack&lt;&gt;();
+    }
+
+    public void push(int val) {
+        if (stack1.isEmpty()){
+            stack1.push(val);
+            return;
+        }
+        //!stack1.isEmpty()&amp;&amp;stack1.peek()&lt;val不可以颠倒
+        while (!stack1.isEmpty()&amp;&amp;stack1.peek()&lt;val){
+            stack2.push(stack1.pop());
+        }
+        stack1.push(val);
+        while (!stack2.isEmpty()){
+            stack1.push(stack2.pop());
+        }
+
+    }
+
+    public void pop() {
+        if (stack1.isEmpty())
+            return;
+        stack1.pop();
+    }
+
+    public int peek() {
+        if (stack1.isEmpty())
+            return -1;
+        return stack1.peek();
+    }
+
+    public boolean isEmpty() {
+        return stack1.isEmpty();
+    }
+}</code></pre>
+<p>优化前200ms，优化后17ms.</p>
+<p>优化：优化前是找到当前元素位置然后就将辅助栈元素全压回主栈，这样如果下一个操作还是push，则需要比较次数增多，可以将全压回主栈的工作在pop和peek再操作，这样可以节省push比较的时间。</p>
+<pre><code class="java">class SortedStack {
+    private Stack&lt;Integer&gt;stack1 ;
+    private Stack&lt;Integer&gt;stack2 ;
+    public SortedStack() {
+        stack1=new Stack&lt;&gt;();
+        stack2=new Stack&lt;&gt;();
+    }
+
+    public void push(int val) {
+        if (stack1.empty()) {
+            stack1.push(val);
+            return;
+        }
+        if (stack1.peek() &lt; val) {
+            while (!stack1.empty() &amp;&amp; stack1.peek() &lt; val) {
+                stack2.push(stack1.pop());
+            }
+        } else{
+            while (!stack2.empty() &amp;&amp; stack2.peek() &gt; val) {
+                stack1.push(stack2.pop());
+            }
+        }
+        stack1.push(val);
+
+    }
+
+
+    public void pop() {
+        while (!stack2.empty()){
+            stack1.push(stack2.pop());
+        }
+        if (stack1.empty()) {
+            return;
+        }
+        stack1.pop();
+    }
+
+    public int peek() {
+        while (!stack2.empty()){
+            stack1.push(stack2.pop());
+        }
+        if (stack1.empty())
+            return -1;
+        return stack1.peek();
+    }
+
+    public boolean isEmpty() {
+        return stack1.empty();
+    }
+}</code></pre>
+<h2 id="23-动物收容所"><a href="#23-动物收容所" class="headerlink" title="23.动物收容所"></a>23.<a href="https://leetcode-cn.com/problems/animal-shelter-lcci/" target="_blank" rel="noopener">动物收容所</a></h2><p><strong>思路：</strong>需要一个数据结构可以存动物信息数组，并可以实现查找和删除任意位置元素的功能，可以用链表实现</p>
+<pre><code class="java">class AnimalShelf {
+    private List&lt;int[]&gt; linkedList ;
+    private int[] a ={-1,-1};
+    public AnimalShelf() {
+        linkedList=new LinkedList&lt;&gt;();
+    }
+
+    public void enqueue(int[] animal) {
+        linkedList.add(animal);
+
+    }
+
+    public int[] dequeueAny() {
+        if (linkedList.size()==0)
+            return a;
+        return linkedList.poll();
+    }
+
+    public int[] dequeueDog() {
+        //先判断链表是否为空可以提高效率，虽然这个if可省
+        if (linkedList.size()==0)
+            return a;
+        for (int i=0;i&lt;linkedList.size();i++){
+            //linkedList.get(i)返回的是一个数组
+            if (linkedList.get(i)[1]==1){
+                int[]b = linkedList.get(i);
+                linkedList.remove(i);
+                return b ;
+            }
+        }
+        return a;
+    }
+
+    public int[] dequeueCat() {
+        if (linkedList.size()==0)
+            return a;
+        for (int i=0;i&lt;linkedList.size();i++){
+            if (linkedList.get(i)[1]==0){
+                int[]b =linkedList.get(i);
+                linkedList.remove(i);
+                return b;
+            }
+        }
+        return a;
+    }
+}</code></pre>
 
             </div>
             <hr>
@@ -494,18 +640,12 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/06/07/LeetCode5/">
-                        <i class="fa fa-chevron-left"></i>
-                        <span class="hidden-mobile">LeetCode5</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/05/29/LeetCode3/">
-                        <span class="hidden-mobile">LeetCode3</span>
+                      <a href="/2020/06/04/LeetCode4/">
+                        <span class="hidden-mobile">LeetCode4</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="fa fa-chevron-right"></i>
                       </a>
@@ -706,7 +846,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "LeetCode4&nbsp;",
+        "LeetCode5&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
