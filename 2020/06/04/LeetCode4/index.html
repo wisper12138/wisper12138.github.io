@@ -386,7 +386,7 @@
     }
 }</code></pre>
 <h2 id="17-环路检测"><a href="#17-环路检测" class="headerlink" title="17.环路检测"></a>17.<a href="https://leetcode-cn.com/problems/linked-list-cycle-lcci/" target="_blank" rel="noopener">环路检测</a></h2><p><strong>思路：</strong>快慢指针，如果有环两个指针一定会相遇。</p>
-<p><img src="%E7%8E%AF%E8%B7%AF%E6%A3%80%E6%B5%8B.png" srcset="/img/loading.gif" alt=""></p>
+<p><img src="2020-06-04-LeetCode4/%E7%8E%AF%E8%B7%AF%E6%A3%80%E6%B5%8B.png" srcset="/img/loading.gif" alt=""></p>
 <p>设慢指针走到相遇点走了a+b+nc,快指针走了a+b+mc,而快指针路程是慢指针两倍2a+2b+2nc</p>
 <p>所以可以得出 a+b+mc=2a+2b+2nc。整理得a=(m-2n）c-b。</p>
 <p>也就是说如果一个指针现在从头出发走到入环点，走了a，另一个指针从相遇点走了m-2n圈c，回到了相遇点再后退b，就会在入环点和a相遇。</p>
